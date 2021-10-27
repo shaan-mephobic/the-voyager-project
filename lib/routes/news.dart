@@ -23,6 +23,8 @@ class _NewsScreenState extends State<NewsScreen>
   late double deviceWidth;
   List<NewsData> news = [];
   final Duration pageTransitionSpeed = const Duration(milliseconds: 200);
+  bool isRefreshing = true;
+  bool isRefreshInterrupt = false;
   final List<String> newsCategories = const [
     "Science",
     "Technology",
@@ -81,15 +83,6 @@ class _NewsScreenState extends State<NewsScreen>
     deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   title: const Text(
-      //     "VOYAGER",
-      //     style: TextStyle(
-      //         fontFamily: "VerminVibes", fontSize: 38, color: Colors.white),
-      //   ),
-      // ),
       body: Container(
         // decoration: const BoxDecoration(
         //   image: DecorationImage(
@@ -105,8 +98,16 @@ class _NewsScreenState extends State<NewsScreen>
             backgroundColor: const Color(0xFF272C31),
             color: Colors.white,
             onRefresh: () async {
+              isRefreshing = true;
               news = await fetchNews();
               setState(() {});
+              isRefreshing = false;
+              if (isRefreshInterrupt) {
+                isRefreshInterrupt = false;
+                SchedulerBinding.instance!.addPostFrameCallback((_) {
+                  _refreshIndicatorKey.currentState?.show();
+                });
+              }
             },
             child: ListView.builder(
               controller: _scrollBarController,
@@ -127,10 +128,11 @@ class _NewsScreenState extends State<NewsScreen>
                             onSelected: (bool value) {
                               setState(() {
                                 newsTagChips[i] = value;
-                                SchedulerBinding.instance!
-                                    .addPostFrameCallback((_) {
-                                  _refreshIndicatorKey.currentState?.show();
-                                });
+                              });
+                              isRefreshInterrupt = isRefreshing;
+                              SchedulerBinding.instance!
+                                  .addPostFrameCallback((_) {
+                                _refreshIndicatorKey.currentState?.show();
                               });
                             },
                           ),
@@ -152,19 +154,18 @@ class _NewsScreenState extends State<NewsScreen>
                           child: Stack(
                             children: [
                               Hero(
-                                tag: news[index - 1].imageUrl!,
+                                tag: "image${index - 1}",
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      // image: AssetImage("assets/res/home.jpg"),
                                       image: NetworkImage(
                                         news[index - 1].imageUrl!,
                                       ),
                                     ),
                                   ),
-                                  child: InkWell(
+                                  child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -175,6 +176,7 @@ class _NewsScreenState extends State<NewsScreen>
                                           reverseDuration: pageTransitionSpeed,
                                           child: ExpandedNews(
                                             currentNews: news[index - 1],
+                                            heroIndex: index - 1,
                                           ),
                                         ),
                                       );
@@ -216,6 +218,7 @@ class _NewsScreenState extends State<NewsScreen>
                                                   child: ExpandedNews(
                                                     currentNews:
                                                         news[index - 1],
+                                                    heroIndex: index - 1,
                                                   ),
                                                 ),
                                               );
@@ -231,12 +234,20 @@ class _NewsScreenState extends State<NewsScreen>
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    news[index - 1].title!,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18),
+                                                  Hero(
+                                                    tag: "title${index - 1}",
+                                                    child: Material(
+                                                      type: MaterialType
+                                                          .transparency,
+                                                      child: Text(
+                                                        news[index - 1].title!,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18),
+                                                      ),
+                                                    ),
                                                   ),
                                                   Row(
                                                     mainAxisAlignment:
@@ -307,6 +318,7 @@ class _NewsScreenState extends State<NewsScreen>
                                       reverseDuration: pageTransitionSpeed,
                                       child: ExpandedNews(
                                         currentNews: news[index - 1],
+                                        heroIndex: index - 1,
                                       ),
                                     ),
                                   );
@@ -316,7 +328,7 @@ class _NewsScreenState extends State<NewsScreen>
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Hero(
-                                      tag: news[index - 1].imageUrl!,
+                                      tag: "image${index - 1}",
                                       child: Container(
                                         height: 110,
                                         width: 110,
@@ -338,11 +350,17 @@ class _NewsScreenState extends State<NewsScreen>
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            news[index - 1].title!,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18),
+                                          Hero(
+                                            tag: "title${index - 1}",
+                                            child: Material(
+                                              type: MaterialType.transparency,
+                                              child: Text(
+                                                news[index - 1].title!,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18),
+                                              ),
+                                            ),
                                           ),
                                           Row(
                                             mainAxisAlignment:
