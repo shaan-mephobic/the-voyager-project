@@ -4,7 +4,6 @@ import 'package:the_voyager_project/logic/hive_db.dart';
 import 'package:the_voyager_project/routes/earthquake.dart';
 import 'package:the_voyager_project/routes/home.dart';
 import 'package:the_voyager_project/routes/news.dart';
-// import 'package:the_voyager_project/routes/iss_tracker.dart';
 import 'package:the_voyager_project/routes/nasa_apod.dart';
 
 void main() async {
@@ -34,10 +33,32 @@ class App extends StatelessWidget {
         '/news': (context) => const NewsScreen(),
         '/home': (context) => const Home(),
       },
+      /* light theme settings */
       theme: ThemeData(
         fontFamily: "Futura",
-        primarySwatch: Colors.red,
-        splashColor: Colors.white,
+        primaryColor: Colors.white,
+        primaryColorBrightness: Brightness.light,
+        brightness: Brightness.light,
+        dividerColor: Colors.white54,
+        scaffoldBackgroundColor: Colors.white,
+        scrollbarTheme: ScrollbarThemeData(
+          interactive: true,
+          isAlwaysShown: false,
+          radius: const Radius.circular(50),
+          thickness: MaterialStateProperty.all(4),
+          crossAxisMargin: 2,
+          thumbColor: MaterialStateProperty.all(Colors.white30),
+        ),
+      ),
+
+      /* Dark theme settings */
+      darkTheme: ThemeData(
+        fontFamily: "Futura",
+        primaryColor: Colors.black,
+        brightness: Brightness.dark,
+        dividerColor: Colors.black12,
+        primaryColorBrightness: Brightness.dark,
+        primaryColorLight: Colors.black,
         scaffoldBackgroundColor: Colors.black,
         scrollbarTheme: ScrollbarThemeData(
           interactive: true,
@@ -48,6 +69,7 @@ class App extends StatelessWidget {
           thumbColor: MaterialStateProperty.all(Colors.white30),
         ),
       ),
+      themeMode: ThemeMode.system,
     );
   }
 }

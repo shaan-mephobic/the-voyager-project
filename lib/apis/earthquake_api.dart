@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:the_voyager_project/logic/hive_db.dart';
 
 class Earthquake {
   Future<List<EarthquakeData>> quakesCheck() async {
-    print("check check check check");
+    debugPrint("check check check check");
     Map quakeDb = voyagerBox.get("quakeDb") ?? {};
     String? _url;
     if (quakeDb['startYear'] != null && quakeDb['endYear'] == null) {

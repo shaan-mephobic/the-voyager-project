@@ -12,36 +12,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   late TabController _tabController;
-  // late final AnimationController _controller;
 
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3, initialIndex: 0);
-    // ..addListener(() {
-    //   if (_tabController.indexIsChanging) {
-    //     setState(() => _controller.forward(from: 0.5));
-    //   }
-    // }
-    // );
-
-    // _controller = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(milliseconds: 400),
-    //   value: 1,
-    // );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return FadeTransition(
-    //   opacity: _controller,
-    //   child: const [
-    //     NewsScreen(),
-    //     QuakeScreen(),
-    //     NasaApod(),
-    //   ][_tabController.index],
-    // );
     return TabBarView(
       physics: const CustomPhysics(),
       controller: _tabController,

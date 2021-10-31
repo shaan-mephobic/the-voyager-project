@@ -6,6 +6,7 @@ class News {
   Future<List<NewsData>> fetchNews(
       {bool? science,
       bool? technology,
+      bool? space,
       bool? all,
       bool? indian,
       bool? business,
@@ -17,10 +18,9 @@ class News {
       bool? miscellaneous,
       bool? hatke,
       bool? automobile}) async {
-    Future<List<NewsData>> newsCategory(String category) async {
+    Future<List<NewsData>> inshotNews(String category) async {
       List<NewsData> specificNews = [];
       String _url = "https://inshortsapi.vercel.app/news?category=$category";
-
       Map data =
           jsonDecode((await http.get(Uri.parse(Uri.encodeFull(_url)))).body);
 
@@ -36,48 +36,70 @@ class News {
             time: data['data'][i]['time'],
             title: data['data'][i]['title']));
       }
-      return specificNews.reversed.toList();
+      return specificNews;
+    }
+
+    Future<List<NewsData>> spaceNews(String category) async {
+      List<NewsData> specificNews = [];
+      String _url = "https://api.spaceflightnewsapi.net/v3/articles";
+      List data =
+          jsonDecode((await http.get(Uri.parse(Uri.encodeFull(_url)))).body);
+
+      for (int i = 0; i < data.length; i++) {
+        specificNews.add(NewsData(
+          category: category,
+          content: data[i]['summary'],
+          date: data[i]['publishedAt'],
+          imageUrl: data[i]['imageUrl'],
+          readMoreUrl: data[i]['url'],
+          title: data[i]['title'],
+        ));
+      }
+      return specificNews;
     }
 
     List<NewsData> news = [];
     if (all ?? false) {
-      news += await newsCategory("all");
+      news += await inshotNews("all");
     } else {
       if (science ?? false) {
-        news += await newsCategory("science");
+        news += await inshotNews("science");
+      }
+      if (space ?? false) {
+        news += await spaceNews("space");
       }
       if (technology ?? false) {
-        news += await newsCategory("technology");
+        news += await inshotNews("technology");
       }
       if (indian ?? false) {
-        news += await newsCategory("national");
+        news += await inshotNews("national");
       }
       if (business ?? false) {
-        news += await newsCategory("business");
+        news += await inshotNews("business");
       }
       if (sports ?? false) {
-        news += await newsCategory("sports");
+        news += await inshotNews("sports");
       }
       if (world ?? false) {
-        news += await newsCategory("world");
+        news += await inshotNews("world");
       }
       if (politics ?? false) {
-        news += await newsCategory("politics");
+        news += await inshotNews("politics");
       }
       if (startup ?? false) {
-        news += await newsCategory("startup");
+        news += await inshotNews("startup");
       }
       if (entertainment ?? false) {
-        news += await newsCategory("entertainment");
+        news += await inshotNews("entertainment");
       }
       if (miscellaneous ?? false) {
-        news += await newsCategory("miscellaneous");
+        news += await inshotNews("miscellaneous");
       }
       if (hatke ?? false) {
-        news += await newsCategory("hatke");
+        news += await inshotNews("hatke");
       }
       if (automobile ?? false) {
-        news += await newsCategory("automobile");
+        news += await inshotNews("automobile");
       }
     }
     return news;

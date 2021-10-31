@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:the_voyager_project/apis/apod_api.dart';
 import 'package:simple_html_css/simple_html_css.dart';
+import 'package:the_voyager_project/routes/fullscreen_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:photo_view/photo_view.dart';
 
 class NasaApod extends StatefulWidget {
   const NasaApod({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class _NasaApodState extends State<NasaApod> with AutomaticKeepAliveClientMixin<
   }
 
   fetchData() async {
-    print("hot hot hot  hot");
+    debugPrint("hot hot hot  hot");
     return await AstronomyPictureOfTheDay().fetchData(
         day: DateTime.now().day,
         month: DateTime.now().month,
@@ -134,7 +134,7 @@ class _NasaApodState extends State<NasaApod> with AutomaticKeepAliveClientMixin<
                                 duration: const Duration(milliseconds: 120),
                                 reverseDuration:
                                     const Duration(milliseconds: 120),
-                                child: ApodFullscreen(
+                                child: FullScreenImage(
                                   imageLink: apod.mediaType == "video"
                                       ? apod.imageThumbnail
                                               .toString()
@@ -207,31 +207,6 @@ class _NasaApodState extends State<NasaApod> with AutomaticKeepAliveClientMixin<
           ],
         );
       }),
-    );
-  }
-}
-
-class ApodFullscreen extends StatelessWidget {
-  final String? imageLink;
-  const ApodFullscreen({Key? key, @required this.imageLink}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(imageLink!),
-        ),
-      ),
-      child: BackdropFilter(
-        filter:
-            ImageFilter.blur(tileMode: TileMode.mirror, sigmaX: 25, sigmaY: 25),
-        child: PhotoView(
-          imageProvider: NetworkImage(imageLink!),
-          backgroundDecoration: const BoxDecoration(color: Colors.transparent),
-        ),
-      ),
     );
   }
 }

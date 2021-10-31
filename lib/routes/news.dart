@@ -20,6 +20,7 @@ class _NewsScreenState extends State<NewsScreen>
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   late double deviceHeight;
+  late bool isDarkMode;
   late double deviceWidth;
   List<NewsData> news = [];
   final Duration pageTransitionSpeed = const Duration(milliseconds: 200);
@@ -28,6 +29,7 @@ class _NewsScreenState extends State<NewsScreen>
   final List<String> newsCategories = const [
     "Science",
     "Technology",
+    "Space",
     "World",
     "Indian",
     "Business",
@@ -40,7 +42,7 @@ class _NewsScreenState extends State<NewsScreen>
     "Miscellaneous"
   ];
   List<bool> newsTagChips = voyagerBox.get("selectedNewsTags") ??
-      List.generate(12, (index) => index == 0 || index == 1 ? true : false);
+      List.generate(13, (index) => index == 0 ? true : false);
 
   @override
   bool get wantKeepAlive => true;
@@ -64,93 +66,115 @@ class _NewsScreenState extends State<NewsScreen>
     return await News().fetchNews(
         science: newsTagChips[0],
         technology: newsTagChips[1],
-        world: newsTagChips[2],
-        indian: newsTagChips[3],
-        business: newsTagChips[4],
-        sports: newsTagChips[5],
-        politics: newsTagChips[6],
-        startup: newsTagChips[7],
-        entertainment: newsTagChips[8],
-        automobile: newsTagChips[9],
-        hatke: newsTagChips[10],
-        miscellaneous: newsTagChips[11]);
+        space: newsTagChips[2],
+        world: newsTagChips[3],
+        indian: newsTagChips[4],
+        business: newsTagChips[5],
+        sports: newsTagChips[6],
+        politics: newsTagChips[7],
+        startup: newsTagChips[8],
+        entertainment: newsTagChips[9],
+        automobile: newsTagChips[10],
+        hatke: newsTagChips[11],
+        miscellaneous: newsTagChips[12]);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    Brightness brightness = MediaQuery.of(context).platformBrightness;
+    isDarkMode = brightness == Brightness.dark;
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Container(
-        // decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     fit: BoxFit.cover,
-        //     image: AssetImage("assets/res/home.jpg"),
-        //   ),
-        // ),
-        color: const Color(0xFF111111),
-        child: Scrollbar(
-          controller: _scrollBarController,
-          child: RefreshIndicator(
-            key: _refreshIndicatorKey,
-            backgroundColor: const Color(0xFF272C31),
-            color: Colors.white,
-            onRefresh: () async {
-              isRefreshing = true;
-              news = await fetchNews();
-              setState(() {});
-              isRefreshing = false;
-              if (isRefreshInterrupt) {
-                isRefreshInterrupt = false;
-                SchedulerBinding.instance!.addPostFrameCallback((_) {
-                  _refreshIndicatorKey.currentState?.show();
-                });
-              }
-            },
-            child: ListView.builder(
-              controller: _scrollBarController,
-              itemCount: news.length + 1,
-              padding: EdgeInsets.only(top: deviceHeight / 10),
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Wrap(
-                      spacing: 8,
-                      children: [
-                        for (int i = 0; i < newsCategories.length; i++)
-                          ChoiceChip(
-                            label: Text(newsCategories[i]),
-                            selected: newsTagChips[i],
-                            onSelected: (bool value) {
-                              setState(() {
-                                newsTagChips[i] = value;
-                              });
-                              isRefreshInterrupt = isRefreshing;
-                              SchedulerBinding.instance!
-                                  .addPostFrameCallback((_) {
-                                _refreshIndicatorKey.currentState?.show();
-                              });
-                            },
-                          ),
-                      ],
-                    ),
-                  );
-                } else if (index == 1) {
-                  return SizedBox(
-                    width: deviceWidth,
-                    height: deviceHeight / 1.8,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: deviceWidth / 9,
-                          right: deviceWidth / 9,
-                          bottom: 20),
-                      child: AspectRatio(
-                        aspectRatio: 10 / 16,
-                        child: Center(
+      body:
+          // Container(
+          // decoration: const BoxDecoration(
+          //   image: DecorationImage(
+          //     fit: BoxFit.cover,
+          //     image: AssetImage("assets/res/home.jpg"),
+          //   ),
+          // ),
+          // color: const Color(0xFF111111)
+          // child:
+          Scrollbar(
+        controller: _scrollBarController,
+        child: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          backgroundColor: const Color(0xFF272C31),
+          color: Colors.white,
+          onRefresh: () async {
+            isRefreshing = true;
+            news = await fetchNews();
+            setState(() {});
+            isRefreshing = false;
+            if (isRefreshInterrupt) {
+              isRefreshInterrupt = false;
+              SchedulerBinding.instance!.addPostFrameCallback((_) {
+                _refreshIndicatorKey.currentState?.show();
+              });
+            }
+          },
+          child: ListView.builder(
+            controller: _scrollBarController,
+            itemCount: news.length + 1,
+            padding: EdgeInsets.only(top: deviceHeight / 10),
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Wrap(
+                    spacing: 8,
+                    children: [
+                      for (int i = 0; i < newsCategories.length; i++)
+                        ChoiceChip(
+                          label: Text(newsCategories[i]),
+                          selectedColor: const Color(0xFF090026),
+                          selected: newsTagChips[i],
+                          onSelected: (bool value) {
+                            setState(() {
+                              newsTagChips[i] = value;
+                            });
+                            isRefreshInterrupt = isRefreshing;
+                            SchedulerBinding.instance!
+                                .addPostFrameCallback((_) {
+                              _refreshIndicatorKey.currentState?.show();
+                            });
+                          },
+                        ),
+                    ],
+                  ),
+                );
+              } else if (index == 1) {
+                return SizedBox(
+                  width: deviceWidth,
+                  height: deviceHeight / 1.8,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: deviceWidth / 9,
+                        right: deviceWidth / 9,
+                        bottom: 20),
+                    child: AspectRatio(
+                      aspectRatio: 10 / 16,
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.fade,
+                                alignment: Alignment.center,
+                                duration: pageTransitionSpeed,
+                                reverseDuration: pageTransitionSpeed,
+                                child: NewsTabView(
+                                  allNews: news,
+                                  newsIndex: index - 1,
+                                ),
+                              ),
+                            );
+                          },
                           child: Stack(
                             children: [
                               Hero(
@@ -174,9 +198,9 @@ class _NewsScreenState extends State<NewsScreen>
                                           alignment: Alignment.center,
                                           duration: pageTransitionSpeed,
                                           reverseDuration: pageTransitionSpeed,
-                                          child: ExpandedNews(
-                                            currentNews: news[index - 1],
-                                            heroIndex: index - 1,
+                                          child: NewsTabView(
+                                            allNews: news,
+                                            newsIndex: index - 1,
                                           ),
                                         ),
                                       );
@@ -186,97 +210,69 @@ class _NewsScreenState extends State<NewsScreen>
                               ),
                               Align(
                                 alignment: Alignment.bottomCenter,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: SizedBox(
-                                    height: 150,
-                                    child: BackdropFilter(
-                                      filter: ImageFilter.blur(
-                                          sigmaX: 10, sigmaY: 10),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.02),
-                                          borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(12),
-                                            bottomRight: Radius.circular(12),
-                                          ),
-                                        ),
-                                        child: Material(
-                                          type: MaterialType.transparency,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType.fade,
-                                                  alignment: Alignment.center,
-                                                  duration: pageTransitionSpeed,
-                                                  reverseDuration:
-                                                      pageTransitionSpeed,
-                                                  child: ExpandedNews(
-                                                    currentNews:
-                                                        news[index - 1],
-                                                    heroIndex: index - 1,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: deviceWidth / 15,
-                                                right: deviceWidth / 15,
-                                              ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Hero(
-                                                    tag: "title${index - 1}",
-                                                    child: Material(
-                                                      type: MaterialType
-                                                          .transparency,
-                                                      child: Text(
-                                                        news[index - 1].title!,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        news[index - 1]
-                                                            .date!
-                                                            .replaceRange(
-                                                                news[index - 1]
-                                                                    .date!
-                                                                    .indexOf(
-                                                                        ","),
-                                                                news[index - 1]
-                                                                    .date!
-                                                                    .length,
-                                                                ""),
-                                                        style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 10),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: deviceHeight / 1.8 / 2,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(12),
+                                      bottomRight: Radius.circular(12),
+                                    ),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      colors: [
+                                        Colors.black87,
+                                        Colors.transparent,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: deviceWidth / 15,
+                                      right: deviceWidth / 15,
+                                      bottom: deviceHeight / 1.8 / 10,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Hero(
+                                          tag: "title${index - 1}",
+                                          child: Material(
+                                            type: MaterialType.transparency,
+                                            child: Text(
+                                              news[index - 1].title!,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white),
                                             ),
                                           ),
                                         ),
-                                      ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              news[index - 1]
+                                                  .date!
+                                                  .replaceRange(
+                                                      news[index - 1]
+                                                          .date!
+                                                          .indexOf(","),
+                                                      news[index - 1]
+                                                          .date!
+                                                          .length,
+                                                      ""),
+                                              style: const TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -286,118 +282,106 @@ class _NewsScreenState extends State<NewsScreen>
                         ),
                       ),
                     ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      height: 130,
-                      decoration: BoxDecoration(
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    height: 130,
+                    decoration: BoxDecoration(
+                      color: isDarkMode
+                          ? const Color(0xFF0f0f0f)
+                          : Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Material(
                         borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Material(
-                              type: MaterialType.transparency,
-                              borderRadius: BorderRadius.circular(12),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.fade,
-                                      alignment: Alignment.center,
-                                      duration: pageTransitionSpeed,
-                                      reverseDuration: pageTransitionSpeed,
-                                      child: ExpandedNews(
-                                        currentNews: news[index - 1],
-                                        heroIndex: index - 1,
+                        type: MaterialType.transparency,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.fade,
+                                alignment: Alignment.center,
+                                duration: pageTransitionSpeed,
+                                reverseDuration: pageTransitionSpeed,
+                                child: NewsTabView(
+                                  allNews: news,
+                                  newsIndex: index - 1,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Hero(
+                                tag: "image${index - 1}",
+                                child: Container(
+                                  height: 110,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        news[index - 1].imageUrl!,
                                       ),
                                     ),
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: deviceWidth / 2,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Hero(
-                                      tag: "image${index - 1}",
-                                      child: Container(
-                                        height: 110,
-                                        width: 110,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                              news[index - 1].imageUrl!,
-                                            ),
-                                          ),
+                                      tag: "title${index - 1}",
+                                      child: Material(
+                                        type: MaterialType.transparency,
+                                        child: Text(
+                                          news[index - 1].title!,
+                                          style: const TextStyle(fontSize: 18),
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: deviceWidth / 2,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Hero(
-                                            tag: "title${index - 1}",
-                                            child: Material(
-                                              type: MaterialType.transparency,
-                                              child: Text(
-                                                news[index - 1].title!,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18),
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                news[index - 1]
-                                                    .date!
-                                                    .replaceRange(
-                                                        news[index - 1]
-                                                            .date!
-                                                            .indexOf(","),
-                                                        news[index - 1]
-                                                            .date!
-                                                            .length,
-                                                        ""),
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 10),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          news[index - 1].category == "space"
+                                              ? news[index - 1].date!
+                                              : news[index - 1]
+                                                  .date!
+                                                  .replaceRange(
+                                                      news[index - 1]
+                                                          .date!
+                                                          .indexOf(","),
+                                                      news[index - 1]
+                                                          .date!
+                                                          .length,
+                                                      ""),
+                                          style: const TextStyle(fontSize: 10),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  );
-                }
-              },
-            ),
+                  ),
+                );
+              }
+            },
           ),
         ),
       ),
