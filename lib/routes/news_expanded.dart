@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_remixicon/flutter_remixicon.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:the_voyager_project/apis/news_api.dart';
 import 'package:the_voyager_project/routes/fullscreen_image.dart';
@@ -314,7 +316,7 @@ class _ExpandedNewsState extends State<ExpandedNews>
               child: Column(
                 children: [
                   SizedBox(
-                    height: deviceHeight / 1.5,
+                    height: deviceHeight / 1.75,
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -330,6 +332,63 @@ class _ExpandedNewsState extends State<ExpandedNews>
                           ),
                         );
                       },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 50.0, left: 25, right: 25.0, bottom: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ChoiceChip(
+                          label: Text(widget.currentNews.category!),
+                          selectedColor: const Color(0xFF090026),
+                          selected: true,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: InkWell(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(25)),
+                                  child: const Icon(
+                                    MIcon.riShareForwardFill,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  onTap: () {
+                                    print("shit");
+                                  },
+                                ),
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.only(left: 12.5)),
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: InkWell(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(25)),
+                                  child: const Icon(
+                                    MIcon.riBookmarkLine,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  onTap: () {
+                                    print("shit");
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   Padding(

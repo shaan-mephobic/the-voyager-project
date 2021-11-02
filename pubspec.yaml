@@ -37,16 +37,14 @@ dependencies:
   webview_flutter: ^2.1.2
 
 
+  # FLUTTER Related
+  share_plus: ^3.0.4
   hive: ^2.0.4
   hive_flutter: ^1.1.0
-
   another_flushbar: ^1.10.24
-
   provider: ^6.0.1
   page_transition: ^2.0.4
   photo_view: ^0.13.0
-  
-  google_maps_flutter: ^2.0.11
 
   # ICONS Related
   cupertino_icons: ^1.0.2
