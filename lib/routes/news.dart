@@ -256,16 +256,19 @@ class _NewsScreenState extends State<NewsScreen>
                                               MainAxisAlignment.end,
                                           children: [
                                             Text(
-                                              news[index - 1]
-                                                  .date!
-                                                  .replaceRange(
-                                                      news[index - 1]
-                                                          .date!
-                                                          .indexOf(","),
-                                                      news[index - 1]
-                                                          .date!
-                                                          .length,
-                                                      ""),
+                                              news[index - 1].category ==
+                                                      "space"
+                                                  ? news[index - 1].date!
+                                                  : news[index - 1]
+                                                      .date!
+                                                      .replaceRange(
+                                                          news[index - 1]
+                                                              .date!
+                                                              .indexOf(","),
+                                                          news[index - 1]
+                                                              .date!
+                                                              .length,
+                                                          ""),
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   color: Colors.white),

@@ -361,7 +361,9 @@ class _ExpandedNewsState extends State<ExpandedNews>
                                     size: 30,
                                   ),
                                   onTap: () {
-                                    print("shit");
+                                    Share.share(
+                                      "${widget.currentNews.title!}\n\n${widget.currentNews.content} \n\n source: ${widget.currentNews.readMoreUrl}\n\n Sent from The Voyager Project",
+                                    );
                                   },
                                 ),
                               ),
