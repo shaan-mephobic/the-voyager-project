@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_voyager_project/routes/earthquake.dart';
 import 'package:the_voyager_project/routes/nasa_apod.dart';
 import 'package:the_voyager_project/routes/news.dart';
+import 'package:the_voyager_project/routes/weather.dart';
 import 'package:the_voyager_project/widgets/custom_physics.dart';
 
 class Home extends StatefulWidget {
@@ -15,7 +16,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _tabController = TabController(vsync: this, length: 3, initialIndex: 0);
+    _tabController = TabController(vsync: this, length: 4, initialIndex: 0);
     super.initState();
   }
 
@@ -25,6 +26,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       physics: const CustomPhysics(),
       controller: _tabController,
       children: const [
+        MoonPage(),
         NewsScreen(),
         QuakeScreen(),
         NasaApod(),

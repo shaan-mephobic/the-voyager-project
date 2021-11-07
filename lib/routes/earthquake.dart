@@ -18,7 +18,8 @@ class QuakeScreen extends StatefulWidget {
   _QuakeScreenState createState() => _QuakeScreenState();
 }
 
-class _QuakeScreenState extends State<QuakeScreen> with AutomaticKeepAliveClientMixin<QuakeScreen>{
+class _QuakeScreenState extends State<QuakeScreen>
+    with AutomaticKeepAliveClientMixin<QuakeScreen> {
   late double deviceHeight;
   late double deviceWidth;
   List<EarthquakeData> earthquakes = [];
@@ -26,7 +27,7 @@ class _QuakeScreenState extends State<QuakeScreen> with AutomaticKeepAliveClient
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-       @override
+  @override
   bool get wantKeepAlive => true;
 
   @override
