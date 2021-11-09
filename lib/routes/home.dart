@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_voyager_project/routes/earthquake.dart';
+import 'package:the_voyager_project/routes/mars.dart';
 import 'package:the_voyager_project/routes/nasa_apod.dart';
 import 'package:the_voyager_project/routes/news.dart';
 import 'package:the_voyager_project/routes/weather.dart';
@@ -16,7 +17,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _tabController = TabController(vsync: this, length: 4, initialIndex: 0);
+    _tabController = TabController(vsync: this, length: 5, initialIndex: 0);
     super.initState();
   }
 
@@ -26,10 +27,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       physics: const CustomPhysics(),
       controller: _tabController,
       children: const [
+        MarsPage(),
         MoonPage(),
         NewsScreen(),
-        QuakeScreen(),
         NasaApod(),
+        QuakeScreen(),
       ],
     );
   }

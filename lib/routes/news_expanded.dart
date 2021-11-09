@@ -382,9 +382,7 @@ class _ExpandedNewsState extends State<ExpandedNews>
                                     color: Colors.white,
                                     size: 30,
                                   ),
-                                  onTap: () {
-                                    print("shit");
-                                  },
+                                  onTap: () {},
                                 ),
                               ),
                             ),
