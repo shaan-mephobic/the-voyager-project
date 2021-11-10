@@ -159,7 +159,7 @@ class _MarsPageState extends State<MarsPage> {
                                   "${header!.maxTemp}°C ${header!.minTemp}°C",
                                   style: TextStyle(
                                     color: marsColor,
-                                    fontSize: deviceHeight / 18,
+                                    fontSize: deviceWidth / 12,
                                     letterSpacing: 2,
                                   ),
                                 ),
