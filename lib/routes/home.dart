@@ -3,7 +3,7 @@ import 'package:the_voyager_project/routes/earthquake.dart';
 import 'package:the_voyager_project/routes/mars.dart';
 import 'package:the_voyager_project/routes/nasa_apod.dart';
 import 'package:the_voyager_project/routes/news.dart';
-import 'package:the_voyager_project/routes/weather.dart';
+import 'package:the_voyager_project/routes/moon.dart';
 import 'package:the_voyager_project/widgets/custom_physics.dart';
 
 class Home extends StatefulWidget {

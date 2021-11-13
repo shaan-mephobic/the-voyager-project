@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:the_voyager_project/apis/weather_api.dart';
+import 'package:the_voyager_project/logic/init.dart';
+import 'package:the_voyager_project/main.dart';
 
 class MoonPage extends StatefulWidget {
   const MoonPage({Key? key}) : super(key: key);
@@ -39,7 +41,6 @@ class _MoonPageState extends State<MoonPage>
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            fit: BoxFit.cover,
             image: AssetImage("assets/res/stars.jpg"),
           ),
         ),
@@ -49,7 +50,6 @@ class _MoonPageState extends State<MoonPage>
           color: Colors.white,
           onRefresh: () async {
             weather = await Weather().fetchWeather(null);
-            // weather = WeatherData(moonDay: "2", moonPhase: "🌔");
             setState(() {});
           },
           child: weather != null

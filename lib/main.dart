@@ -6,7 +6,7 @@ import 'package:the_voyager_project/routes/home.dart';
 import 'package:the_voyager_project/routes/mars.dart';
 import 'package:the_voyager_project/routes/news.dart';
 import 'package:the_voyager_project/routes/nasa_apod.dart';
-import 'package:the_voyager_project/routes/weather.dart';
+import 'package:the_voyager_project/routes/moon.dart';
 
 void main() async {
   Paint.enableDithering = true;
@@ -34,8 +34,8 @@ class App extends StatelessWidget {
         '/earthquake': (context) => const QuakeScreen(),
         '/news': (context) => const NewsScreen(),
         '/home': (context) => const Home(),
-        '/moon':(context) => const MoonPage(),
-        '/mars':(context) => const MarsPage(),
+        '/moon': (context) => const MoonPage(),
+        '/mars': (context) => const MarsPage(),
       },
       /* light theme settings */
       theme: ThemeData(
