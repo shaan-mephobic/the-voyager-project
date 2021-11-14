@@ -32,22 +32,22 @@ dependencies:
 
   # WEB Related
   http: ^0.13.4
-  simple_html_css: ^3.0.1
+  simple_html_css: ^3.0.1+1
   url_launcher: ^6.0.12
-  webview_flutter: ^2.1.2
+  webview_flutter: ^2.3.1
 
 
   # FLUTTER Related
   share_plus: ^3.0.4
   hive: ^2.0.4
   hive_flutter: ^1.1.0
-  another_flushbar: ^1.10.24
+  another_flushbar: ^1.10.25
   provider: ^6.0.1
   page_transition: ^2.0.4
   photo_view: ^0.13.0
 
   # ICONS Related
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
   flutter_remixicon:
     git: https://github.com/KarimAbdo/flutter_remixicon.git
   ionicons: ^0.1.2

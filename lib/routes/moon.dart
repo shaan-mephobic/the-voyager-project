@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:the_voyager_project/apis/weather_api.dart';
-import 'package:the_voyager_project/logic/init.dart';
-import 'package:the_voyager_project/main.dart';
 
 class MoonPage extends StatefulWidget {
   const MoonPage({Key? key}) : super(key: key);
