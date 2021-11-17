@@ -17,14 +17,15 @@ class NasaApod extends StatefulWidget {
   _NasaApodState createState() => _NasaApodState();
 }
 
-class _NasaApodState extends State<NasaApod> with AutomaticKeepAliveClientMixin<NasaApod> {
+class _NasaApodState extends State<NasaApod>
+    with AutomaticKeepAliveClientMixin<NasaApod> {
   late ScrollController _scrollBarController;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   late double deviceHeight;
   late double deviceWidth;
   ApodData apod = ApodData();
- @override
+  @override
   bool get wantKeepAlive => true;
   @override
   void initState() {
@@ -117,89 +118,93 @@ class _NasaApodState extends State<NasaApod> with AutomaticKeepAliveClientMixin<
                   apod = await fetchData();
                   setState(() {});
                 },
-                child: SingleChildScrollView(
-                  controller: _scrollBarController,
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: deviceHeight / 1.5,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.fade,
-                                alignment: Alignment.center,
-                                duration: const Duration(milliseconds: 120),
-                                reverseDuration:
-                                    const Duration(milliseconds: 120),
-                                child: FullScreenImage(
-                                  imageLink: apod.mediaType == "video"
-                                      ? apod.imageThumbnail
-                                              .toString()
-                                              .startsWith("http")
-                                          ? apod.imageThumbnail
-                                          : "https://${apod.imageThumbnail}"
-                                      : apod.mediaUrl,
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  child: SingleChildScrollView(
+                    controller: _scrollBarController,
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: deviceHeight / 1.7,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.fade,
+                                  alignment: Alignment.center,
+                                  duration: const Duration(milliseconds: 120),
+                                  reverseDuration:
+                                      const Duration(milliseconds: 120),
+                                  child: FullScreenImage(
+                                    imageLink: apod.mediaType == "video"
+                                        ? apod.imageThumbnail
+                                                .toString()
+                                                .startsWith("http")
+                                            ? apod.imageThumbnail
+                                            : "https://${apod.imageThumbnail}"
+                                        : apod.mediaUrl,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: deviceWidth,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            apod.title ?? "",
-                            style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              fontStyle: FontStyle.italic,
+                        SizedBox(
+                          width: deviceWidth,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                              apod.title ?? "",
+                              style: const TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: deviceWidth,
-                        child: Padding(
-                          padding: const EdgeInsets.all(25),
-                          child: HTML.toRichText(
-                              context, apod.description ?? "",
-                              overrideStyle: {
-                                "a": const TextStyle(
-                                    color: Colors.red,
-                                    decoration: TextDecoration.none),
-                              },
-                              defaultTextStyle: const TextStyle(
-                                fontSize: 20,
+                        SizedBox(
+                          width: deviceWidth,
+                          child: Padding(
+                            padding: const EdgeInsets.all(25),
+                            child: HTML.toRichText(
+                                context, apod.description ?? "",
+                                overrideStyle: {
+                                  "a": const TextStyle(
+                                      color: Colors.red,
+                                      decoration: TextDecoration.none),
+                                },
+                                defaultTextStyle: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                                linksCallback: (link) async =>
+                                    await canLaunch(link)
+                                        ? await launch(link)
+                                        : throw 'Could not launch $link'),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 60.0, left: 30, right: 30, bottom: 10),
+                          child: SizedBox(
+                            width: deviceWidth,
+                            child: Text(
+                              apod.copyright ?? "",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 15,
                                 color: Colors.white,
                               ),
-                              linksCallback: (link) async =>
-                                  await canLaunch(link)
-                                      ? await launch(link)
-                                      : throw 'Could not launch $link'),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 60.0, left: 30, right: 30, bottom: 10),
-                        child: SizedBox(
-                          width: deviceWidth,
-                          child: Text(
-                            apod.copyright ?? "",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
