@@ -33,7 +33,7 @@ dependencies:
   # WEB Related
   http: ^0.13.4
   simple_html_css: ^3.0.1+1
-  url_launcher: ^6.0.12
+  url_launcher: ^6.0.13
   webview_flutter: ^2.3.1
 
 
