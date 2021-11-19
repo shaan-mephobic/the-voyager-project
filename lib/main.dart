@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:the_voyager_project/logic/hive_db.dart';
+import 'package:the_voyager_project/logic/init.dart';
 import 'package:the_voyager_project/routes/earthquake.dart';
 import 'package:the_voyager_project/routes/home.dart';
 import 'package:the_voyager_project/routes/mars.dart';
@@ -10,6 +11,7 @@ import 'package:the_voyager_project/routes/moon.dart';
 
 void main() async {
   Paint.enableDithering = true;
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
