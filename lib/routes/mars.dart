@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_remixicon/flutter_remixicon.dart';
 import 'package:the_voyager_project/apis/mars_weather.dart';
+import 'package:the_voyager_project/logic/init.dart';
 // import 'package:page_transition/page_transition.dart';
 
 class MarsPage extends StatefulWidget {
@@ -68,9 +69,9 @@ class _MarsPageState extends State<MarsPage>
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/res/marsurface.jpg'),
+            image: MemoryImage(Init.images[0]),
             fit: BoxFit.cover,
           ),
         ),
@@ -366,7 +367,14 @@ class _MarsPageState extends State<MarsPage>
                     ),
                   ),
                 )
-              : const SizedBox(),
+              : Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(Init.images[0]),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
         ),
       ),
     );

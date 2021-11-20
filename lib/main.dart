@@ -17,6 +17,7 @@ void main() async {
       statusBarColor: Colors.transparent,
     ),
   );
+  await Init().cacheImages();
   await HiveDB().hiveInit();
   runApp(
     const App(),

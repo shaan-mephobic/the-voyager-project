@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:the_voyager_project/apis/weather_api.dart';
+import 'package:the_voyager_project/logic/init.dart';
 
 class MoonPage extends StatefulWidget {
   const MoonPage({Key? key}) : super(key: key);
@@ -24,10 +26,10 @@ class _MoonPageState extends State<MoonPage>
 
   @override
   void initState() {
+    super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       _refreshIndicatorKey.currentState?.show();
     });
-    super.initState();
   }
 
   @override
@@ -37,9 +39,10 @@ class _MoonPageState extends State<MoonPage>
     deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/res/stars.jpg"),
+            image: MemoryImage(Init.images[1]),
+            fit: BoxFit.cover,
           ),
         ),
         child: RefreshIndicator(
@@ -316,7 +319,14 @@ class _MoonPageState extends State<MoonPage>
                     ],
                   ),
                 )
-              : const SizedBox(),
+              : Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(Init.images[1]),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
         ),
       ),
     );
